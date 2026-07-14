@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal AI — Your Own AI That Knows It All</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #142B24;
+    --ink-2: #1E3F35;
+    --parchment: #F1E7D2;
+    --parchment-2: #E8DAB9;
+    --gold: #B8862E;
+    --gold-light: #D8AE5C;
+    --maroon: #7A2430;
+    --text-dark: #241C10;
+    --text-soft: #5B4C34;
+    --radius: 14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--parchment);
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(184,134,46,0.06) 0, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(122,36,48,0.05) 0, transparent 40%);
+    color: var(--text-dark);
+    font-family: "Noto Sans", sans-serif;
+    line-height: 1.6;
+  }
+  a{color:inherit;}
+
+  .star-border{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='%23B8862E' stroke-width='1' opacity='0.55'%3E%3Cpath d='M20 2 L26 14 L38 14 L28 22 L32 34 L20 26 L8 34 L12 22 L2 14 L14 14 Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 40px 40px;
+    height: 16px;
+  }
+
+  header{
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+    color: var(--parchment);
+    padding: 64px 24px 80px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:0;
+    height:16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='%23D8AE5C' stroke-width='1' opacity='0.7'%3E%3Cpath d='M20 2 L26 14 L38 14 L28 22 L32 34 L20 26 L8 34 L12 22 L2 14 L14 14 Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat:repeat-x; background-size:40px 40px;
+  }
+  .eyebrow{
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 18px;
+  }
+  h1.hero-title{
+    font-family:"Amiri", serif;
+    font-weight:700;
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--parchment);
+    margin-bottom: 14px;
+  }
+  .hero-sub{
+    max-width: 620px;
+    margin: 0 auto;
+    color: #CFC3A6;
+    font-size: 17px;
+  }
+
+  main{
+    max-width: 960px;
+    margin: -44px auto 0;
+    padding: 0 20px 80px;
+    position:relative;
+    z-index:2;
+  }
+
+  .topics{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .topic-card{
+    background: var(--parchment);
+    border: 1px solid var(--parchment-2);
+    border-top: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    box-shadow: 0 6px 18px rgba(20,43,36,0.08);
+    cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    text-align:left;
+  }
+  .topic-card:hover{ transform: translateY(-3px); box-shadow: 0 10px 22px rgba(20,43,36,0.14); }
+  .topic-card .num{
+    font-family:"Amiri", serif;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing:1px;
+  }
+  .topic-card h3{
+    font-family:"Amiri", serif;
+    font-size: 20px;
+    margin: 8px 0 6px;
+    color: var(--ink);
+  }
+  .topic-card p{ font-size: 13.5px; color: var(--text-soft); }
+
+  .it-section{
+    background: var(--parchment);
+    border: 1px solid var(--parchment-2);
+    border-top: 3px solid var(--maroon);
+    border-radius: var(--radius);
+    padding: 22px 24px 24px;
+    box-shadow: 0 6px 18px rgba(20,43,36,0.08);
+    margin-bottom: 28px;
+  }
+  .it-head .num{
+    font-family:"Amiri", serif;
+    color: var(--maroon);
+    font-size: 13px;
+    letter-spacing:1px;
+  }
+  .it-head h3{
+    font-family:"Amiri", serif;
+    font-size: 21px;
+    margin: 6px 0 6px;
+    color: var(--ink);
+  }
+  .it-head p{ font-size: 13.5px; color: var(--text-soft); margin-bottom: 16px; }
+
+  .it-tabs{
+    display:flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--parchment-2);
+  }
+  .it-tab{
+    background: none;
+    border: none;
+    padding: 8px 4px 10px;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-soft);
+    cursor:pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .it-tab.active{
+    color: var(--maroon);
+    border-bottom: 2px solid var(--maroon);
+  }
+  .it-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+  }
+  .it-chips.hidden{ display:none; }
+  .chip{
+    background: #fff;
+    border: 1px solid var(--gold);
+    color: var(--ink);
+    font-size: 13.5px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor:pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .chip:hover{
+    background: var(--gold);
+    color: #fff;
+  }
+
+  .chat-frame{
+    background: var(--ink);
+    border-radius: 20px;
+    padding: 4px;
+    box-shadow: 0 20px 50px rgba(20,43,36,0.25);
+  }
+  .chat-inner{
+    background: var(--parchment);
+    border-radius: 16px;
+    overflow:hidden;
+  }
+  .chat-head{
+    background: linear-gradient(180deg, var(--ink-2), var(--ink));
+    color: var(--parchment);
+    padding: 18px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .chat-head .title{
+    font-family:"Amiri", serif;
+    font-size: 20px;
+    color: var(--gold-light);
+  }
+  .chat-head .status{
+    font-size: 12px;
+    color: #9FB3AB;
+  }
+  .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#4CAF7D; margin-left:6px; }
+
+  #chatBox{
+    height: 440px;
+    overflow-y: auto;
+    padding: 22px;
+    display:flex;
+    flex-direction:column;
+    gap: 14px;
+    background:
+      repeating-linear-gradient(180deg, transparent, transparent 27px, rgba(184,134,46,0.06) 28px);
+  }
+  .msg{
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    white-space: pre-wrap;
+  }
+  .msg.user{
+    align-self:flex-end;
+    background: var(--ink);
+    color: var(--parchment);
+    border-bottom-right-radius: 3px;
+  }
+  .msg.ai{
+    align-self:flex-start;
+    background: #fff;
+    border: 1px solid var(--parchment-2);
+    color: var(--text-dark);
+    border-bottom-left-radius: 3px;
+  }
+  .msg.ai.thinking{ color: var(--text-soft); font-style: italic; }
+  .msg.system-note{
+    align-self:center;
+    background: transparent;
+    color: var(--text-soft);
+    font-size: 12.5px;
+    text-align:center;
+    max-width:90%;
+  }
+
+  .chat-form{
+    display:flex;
+    gap: 10px;
+    padding: 16px 18px;
+    background: var(--parchment-2);
+    border-top: 1px solid #D8C89C;
+  }
+  #userInput{
+    flex:1;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #C9B587;
+    font-size: 15px;
+    font-family: "Noto Sans", sans-serif;
+    background: #fff;
+  }
+  #userInput:focus{ outline: 2px solid var(--gold); outline-offset:1px; }
+  #sendBtn{
+    background: var(--maroon);
+    color: #fff;
+    border: none;
+    padding: 0 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor:pointer;
+    font-size: 15px;
+  }
+  #sendBtn:hover{ background: #8E2C39; }
+  #sendBtn:disabled{ opacity: .5; cursor:not-allowed; }
+
+  footer{
+    text-align:center;
+    padding: 30px 20px 50px;
+    color: var(--text-soft);
+    font-size: 13px;
+  }
+
+  @media (max-width: 900px){
+    .topics{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px){
+    .topics{ grid-template-columns: 1fr; }
+    #chatBox{ height: 380px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Your Own AI Assistant</div>
+  <h1 class="hero-title">Personal AI</h1>
+  <p class="hero-sub">Everything, in one place. Study help, IT (beginner to advanced), Islamic history (from Prophet Adam A.S. to today), current politics, science, geography, and general world knowledge — ask anything, straight up.</p>
+</header>
+
+<main>
+  <div class="topics">
+    <div class="topic-card" onclick="quickAsk('Give me a brief timeline of Islamic history from Prophet Adam A.S. to the Rashidun Caliphate.')">
+      <div class="num">01</div>
+      <h3>Islamic History</h3>
+      <p>From Prophet Adam A.S. to today — Prophets, Caliphs, and key events.</p>
+    </div>
+    <div class="topic-card" onclick="quickAsk('Explain a topic from my subject — for example, break down a tricky physics concept in simple terms.')">
+      <div class="num">02</div>
+      <h3>Study Help</h3>
+      <p>Get help with any subject, homework, or exam prep.</p>
+    </div>
+    <div class="topic-card" onclick="quickAsk('Tell me about the current political situation today — keep in mind your knowledge has a cutoff date.')">
+      <div class="num">03</div>
+      <h3>Current Politics</h3>
+      <p>Basic information about today's leaders and events.</p>
+    </div>
+    <div class="topic-card" onclick="quickAsk('Tell me something interesting about the world — any country, science fact, or general knowledge.')">
+      <div class="num">04</div>
+      <h3>Everything Else</h3>
+      <p>Countries, science, geography, sports, technology — ask anything.</p>
+    </div>
+  </div>
+
+  <div class="it-section">
+    <div class="it-head">
+      <div class="num">05</div>
+      <h3>IT — Beginner to Advanced</h3>
+      <p>Click any IT topic to get a full roadmap and explanation — from zero all the way to advanced level.</p>
+    </div>
+    <div class="it-tabs">
+      <button class="it-tab active" data-level="beginner">Beginner</button>
+      <button class="it-tab" data-level="intermediate">Intermediate</button>
+      <button class="it-tab" data-level="advanced">Advanced</button>
+    </div>
+    <div class="it-chips" id="itChipsBeginner">
+      <span class="chip" onclick="quickAsk('I am completely new to computers and IT. Explain from scratch — how a computer works, what an operating system is.')">Computer Basics</span>
+      <span class="chip" onclick="quickAsk('Teach me HTML and CSS from a complete beginner level, with a small example.')">HTML &amp; CSS</span>
+      <span class="chip" onclick="quickAsk('Explain the concept of programming from scratch — variables, loops, conditions — using Python examples.')">Programming Basics (Python)</span>
+      <span class="chip" onclick="quickAsk('What are Git and GitHub, and how do beginners use them?')">Git &amp; GitHub</span>
+      <span class="chip" onclick="quickAsk('Give a basic introduction to computer networks — how does the internet work?')">Networking Basics</span>
+      <span class="chip" onclick="quickAsk('What are the basic IT skills (MS Office / Google Workspace) needed for almost any job?')">Office &amp; Digital Skills</span>
+    </div>
+    <div class="it-chips hidden" id="itChipsIntermediate">
+      <span class="chip" onclick="quickAsk('Explain JavaScript at an intermediate level — DOM manipulation and functions, with examples.')">JavaScript</span>
+      <span class="chip" onclick="quickAsk('Explain data structures and algorithms (arrays, linked lists, sorting) at an intermediate level.')">Data Structures &amp; Algorithms</span>
+      <span class="chip" onclick="quickAsk('Explain SQL and databases at an intermediate level — tables, queries, joins, with examples.')">Databases &amp; SQL</span>
+      <span class="chip" onclick="quickAsk('Give an intermediate roadmap for backend development — APIs, servers, etc.')">Backend Development</span>
+      <span class="chip" onclick="quickAsk('Explain object-oriented programming (OOP) concepts at an intermediate level.')">OOP Concepts</span>
+      <span class="chip" onclick="quickAsk('Teach Linux command line at an intermediate level — essential commands with examples.')">Linux &amp; Command Line</span>
+    </div>
+    <div class="it-chips hidden" id="itChipsAdvanced">
+      <span class="chip" onclick="quickAsk('Give an advanced-level roadmap for cybersecurity — ethical hacking, network security, etc.')">Cybersecurity</span>
+      <span class="chip" onclick="quickAsk('Explain an advanced-level roadmap for cloud computing (AWS/Azure/GCP).')">Cloud Computing</span>
+      <span class="chip" onclick="quickAsk('Explain an advanced roadmap for Artificial Intelligence and Machine Learning — from math foundations to models.')">AI &amp; Machine Learning</span>
+      <span class="chip" onclick="quickAsk('Explain advanced system design concepts — scalability, load balancing, microservices.')">System Design</span>
+      <span class="chip" onclick="quickAsk('Give an advanced roadmap for DevOps — CI/CD, Docker, Kubernetes.')">DevOps</span>
+      <span class="chip" onclick="quickAsk('Give an advanced roadmap for mobile app development (Android/iOS or cross-platform).')">Mobile App Development</span>
+    </div>
+  </div>
+
+  <div class="chat-frame">
+    <div class="chat-inner">
+      <div class="chat-head">
+        <span class="title">Personal AI</span>
+        <span class="status">Online<span class="dot"></span></span>
+      </div>
+      <div id="chatBox">
+        <div class="msg system-note">Hello! This is your Personal AI — ask about anything in the world: study, IT, history, science, geography, politics, or anything else. Type your question below in English, Urdu, or Roman Urdu, whichever is easier for you.</div>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <input type="text" id="userInput" placeholder="Type your question here…" autocomplete="off" required>
+        <button type="submit" id="sendBtn">Send</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Personal AI — your own AI tool. Please verify important information yourself to avoid misinformation.
+</footer>
+
+<script>
+  const chatBox = document.getElementById('chatBox');
+  const chatForm = document.getElementById('chatForm');
+  const userInput = document.getElementById('userInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  let history = [];
+
+  const itTabs = document.querySelectorAll('.it-tab');
+  const itPanels = {
+    beginner: document.getElementById('itChipsBeginner'),
+    intermediate: document.getElementById('itChipsIntermediate'),
+    advanced: document.getElementById('itChipsAdvanced')
+  };
+  itTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      itTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      Object.values(itPanels).forEach(p => p.classList.add('hidden'));
+      itPanels[tab.dataset.level].classList.remove('hidden');
+    });
+  });
+
+  function addMessage(text, sender){
+    const div = document.createElement('div');
+    div.className = 'msg ' + sender;
+    div.textContent = text;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return div;
+  }
+
+  function quickAsk(text){
+    userInput.value = text;
+    chatForm.requestSubmit();
+  }
+
+  async function sendMessage(text){
+    addMessage(text, 'user');
+    history.push({ role: 'user', content: text });
+
+    const thinkingEl = addMessage('Thinking...', 'ai thinking');
+    sendBtn.disabled = true;
+
+    try{
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history })
+      });
+
+      if(!response.ok){
+        throw new Error('Server error: ' + response.status);
+      }
+
+      const data = await response.json();
+      thinkingEl.remove();
+      addMessage(data.reply, 'ai');
+      history.push({ role: 'assistant', content: data.reply });
+    }catch(err){
+      thinkingEl.remove();
+      addMessage('Sorry, something went wrong. Please try again. (If this is your first time setting up, check the API key in README.md.)', 'ai');
+      console.error(err);
+    }finally{
+      sendBtn.disabled = false;
+    }
+  }
+
+  chatForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const text = userInput.value.trim();
+    if(!text) return;
+    userInput.value = '';
+    sendMessage(text);
+  });
+</script>
+
+</body>
+</html>
